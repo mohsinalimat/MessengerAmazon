@@ -1,0 +1,659 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Channel {
+  createdAt: AWSDateTime
+  createdBy: String
+  details: String
+  isArchived: Boolean
+  isDeleted: Boolean
+  lastMessageCounter: Int
+  lastMessageText: String
+  lastTypingReset: AWSDateTime
+  members: [String]
+  name: String
+  objectId: String!
+  topic: String
+  typing: [String]
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+type ChannelConnection {
+  items: [Channel]
+  nextToken: String
+}
+
+type Detail {
+  chatId: String
+  createdAt: AWSDateTime
+  lastRead: Int
+  objectId: String!
+  updatedAt: AWSDateTime
+  userId: String
+  workspaceId: String
+}
+
+type DetailConnection {
+  items: [Detail]
+  nextToken: String
+}
+
+type Direct {
+  active: [String]
+  createdAt: AWSDateTime
+  lastMessageCounter: Int
+  lastMessageText: String
+  lastTypingReset: AWSDateTime
+  members: [String]
+  objectId: String!
+  typing: [String]
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+type DirectConnection {
+  items: [Direct]
+  nextToken: String
+}
+
+type Message {
+  chatId: String
+  chatType: String
+  counter: Int
+  createdAt: AWSDateTime
+  fileName: String
+  fileSize: String
+  fileType: String
+  fileURL: String
+  isDeleted: Boolean
+  isEdited: Boolean
+  mediaDuration: Float
+  mediaHeight: Int
+  mediaWidth: Int
+  objectId: String!
+  senderId: String
+  sticker: String
+  text: String
+  thumbnailURL: String
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+type MessageConnection {
+  items: [Message]
+  nextToken: String
+}
+
+type Mutation {
+  createChannel(input: CreateChannelInput!): Channel
+  createDetail(input: CreateDetailInput!): Detail
+  createDirect(input: CreateDirectInput!): Direct
+  createMessage(input: CreateMessageInput!): Message
+  createPresence(input: CreatePresenceInput!): Presence
+  createUser(input: CreateUserInput!): User
+  createWorkspace(input: CreateWorkspaceInput!): Workspace
+  deleteChannel(input: DeleteChannelInput!): Channel
+  deleteDetail(input: DeleteDetailInput!): Detail
+  deleteDirect(input: DeleteDirectInput!): Direct
+  deleteMessage(input: DeleteMessageInput!): Message
+  deletePresence(input: DeletePresenceInput!): Presence
+  deleteUser(input: DeleteUserInput!): User
+  deleteWorkspace(input: DeleteWorkspaceInput!): Workspace
+  updateChannel(input: UpdateChannelInput!): Channel
+  updateDetail(input: UpdateDetailInput!): Detail
+  updateDirect(input: UpdateDirectInput!): Direct
+  updateMessage(input: UpdateMessageInput!): Message
+  updatePresence(input: UpdatePresenceInput!): Presence
+  updateUser(input: UpdateUserInput!): User
+  updateWorkspace(input: UpdateWorkspaceInput!): Workspace
+}
+
+type Presence {
+  createdAt: AWSDateTime
+  lastPresence: AWSDateTime
+  objectId: String!
+  updatedAt: AWSDateTime
+}
+
+type PresenceConnection {
+  items: [Presence]
+  nextToken: String
+}
+
+type Query {
+  getChannel(objectId: String!): Channel
+  getDetail(objectId: String!): Detail
+  getDirect(objectId: String!): Direct
+  getMessage(objectId: String!): Message
+  getPresence(objectId: String!): Presence
+  getUser(objectId: String!): User
+  getWorkspace(objectId: String!): Workspace
+  listChannels(
+    filter: TableChannelFilterInput
+    limit: Int
+    nextToken: String
+  ): ChannelConnection
+  listDetails(
+    filter: TableDetailFilterInput
+    limit: Int
+    nextToken: String
+  ): DetailConnection
+  listDirects(
+    filter: TableDirectFilterInput
+    limit: Int
+    nextToken: String
+  ): DirectConnection
+  listMessages(chatId: String, limit: Int, nextToken: String): MessageConnection
+  listPresences(
+    filter: TablePresenceFilterInput
+    limit: Int
+    nextToken: String
+  ): PresenceConnection
+  listUsers(
+    filter: TableUserFilterInput
+    limit: Int
+    nextToken: String
+  ): UserConnection
+  listWorkspaces(
+    filter: TableWorkspaceFilterInput
+    limit: Int
+    nextToken: String
+  ): WorkspaceConnection
+}
+
+type Subscription {
+  onDeleteChannel(objectId: String, workspaceId: String): Channel
+    @aws_subscribe(mutations: ["deleteChannel"])
+  onDeleteDetail(
+    chatId: String
+    lastRead: Int
+    objectId: String
+    userId: String
+    workspaceId: String
+  ): Detail @aws_subscribe(mutations: ["deleteDetail"])
+  onDeleteDirect(
+    active: [String]
+    members: [String]
+    objectId: String
+    typing: [String]
+    workspaceId: String
+  ): Direct @aws_subscribe(mutations: ["deleteDirect"])
+  onDeleteMessage(
+    chatId: String
+    chatType: String
+    objectId: String
+    senderId: String
+    workspaceId: String
+  ): Message @aws_subscribe(mutations: ["deleteMessage"])
+  onDeletePresence(objectId: String): Presence
+    @aws_subscribe(mutations: ["deletePresence"])
+  onDeleteUser(objectId: String, workspaces: [String]): User
+    @aws_subscribe(mutations: ["deleteUser"])
+  onDeleteWorkspace(
+    channelId: String
+    members: [String]
+    name: String
+    objectId: String
+    ownerId: String
+  ): Workspace @aws_subscribe(mutations: ["deleteWorkspace"])
+  onUpdateChannel(objectId: String, workspaceId: String): Channel
+    @aws_subscribe(mutations: ["updateChannel", "createChannel"])
+  onUpdateDetail(
+    chatId: String
+    lastRead: Int
+    objectId: String
+    userId: String
+    workspaceId: String
+  ): Detail @aws_subscribe(mutations: ["updateDetail", "createDetail"])
+  onUpdateDirect(
+    active: [String]
+    members: [String]
+    objectId: String
+    typing: [String]
+    workspaceId: String
+  ): Direct @aws_subscribe(mutations: ["updateDirect", "createDirect"])
+  onUpdateMessage(
+    chatId: String
+    chatType: String
+    objectId: String
+    senderId: String
+    workspaceId: String
+  ): Message @aws_subscribe(mutations: ["updateMessage", "createMessage"])
+  onUpdatePresence(objectId: String): Presence
+    @aws_subscribe(mutations: ["updatePresence", "createPresence"])
+  onUpdateUser(objectId: String, workspaces: [String]): User
+    @aws_subscribe(mutations: ["updateUser", "createUser"])
+  onUpdateWorkspace(
+    channelId: String
+    members: [String]
+    name: String
+    objectId: String
+    ownerId: String
+  ): Workspace @aws_subscribe(mutations: ["updateWorkspace", "createWorkspace"])
+}
+
+type User {
+  createdAt: AWSDateTime
+  displayName: String
+  email: String
+  fullName: String
+  objectId: String!
+  phoneNumber: String
+  photoURL: String
+  theme: String
+  thumbnailURL: String
+  title: String
+  updatedAt: AWSDateTime
+  workspaces: [String]
+}
+
+type UserConnection {
+  items: [User]
+  nextToken: String
+}
+
+type Workspace {
+  channelId: String
+  createdAt: AWSDateTime
+  details: String
+  isDeleted: Boolean
+  members: [String]
+  name: String
+  objectId: String!
+  ownerId: String
+  photoURL: String
+  thumbnailURL: String
+  updatedAt: AWSDateTime
+}
+
+type WorkspaceConnection {
+  items: [Workspace]
+  nextToken: String
+}
+
+input CreateChannelInput {
+  createdAt: AWSDateTime
+  createdBy: String
+  details: String
+  isArchived: Boolean
+  isDeleted: Boolean
+  lastMessageCounter: Int
+  lastMessageText: String
+  lastTypingReset: AWSDateTime
+  members: [String]
+  name: String
+  objectId: String!
+  topic: String
+  typing: [String]
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+input CreateDetailInput {
+  chatId: String
+  createdAt: AWSDateTime
+  lastRead: Int
+  objectId: String!
+  updatedAt: AWSDateTime
+  userId: String
+  workspaceId: String
+}
+
+input CreateDirectInput {
+  active: [String]
+  createdAt: AWSDateTime
+  lastMessageCounter: Int
+  lastMessageText: String
+  lastTypingReset: AWSDateTime
+  members: [String]
+  objectId: String!
+  typing: [String]
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+input CreateMessageInput {
+  chatId: String
+  chatType: String
+  counter: Int
+  createdAt: AWSDateTime
+  fileName: String
+  fileSize: String
+  fileType: String
+  fileURL: String
+  isDeleted: Boolean
+  isEdited: Boolean
+  mediaDuration: Float
+  mediaHeight: Int
+  mediaWidth: Int
+  objectId: String!
+  senderId: String
+  sticker: String
+  text: String
+  thumbnailURL: String
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+input CreatePresenceInput {
+  createdAt: AWSDateTime
+  lastPresence: AWSDateTime
+  objectId: String!
+  updatedAt: AWSDateTime
+}
+
+input CreateUserInput {
+  createdAt: AWSDateTime
+  displayName: String
+  email: String
+  fullName: String
+  objectId: String!
+  phoneNumber: String
+  photoURL: String
+  theme: String
+  thumbnailURL: String
+  title: String
+  updatedAt: AWSDateTime
+  workspaces: [String]
+}
+
+input CreateWorkspaceInput {
+  channelId: String
+  createdAt: AWSDateTime
+  details: String
+  isDeleted: Boolean
+  members: [String]
+  name: String
+  objectId: String!
+  ownerId: String
+  photoURL: String
+  thumbnailURL: String
+  updatedAt: AWSDateTime
+}
+
+input DeleteChannelInput {
+  objectId: String!
+}
+
+input DeleteDetailInput {
+  objectId: String!
+}
+
+input DeleteDirectInput {
+  objectId: String!
+}
+
+input DeleteMessageInput {
+  objectId: String!
+}
+
+input DeletePresenceInput {
+  objectId: String!
+}
+
+input DeleteUserInput {
+  objectId: String!
+}
+
+input DeleteWorkspaceInput {
+  objectId: String!
+}
+
+input TableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input TableChannelFilterInput {
+  createdAt: TableStringFilterInput
+  createdBy: TableStringFilterInput
+  details: TableStringFilterInput
+  isArchived: TableBooleanFilterInput
+  isDeleted: TableBooleanFilterInput
+  lastMessageCounter: TableIntFilterInput
+  lastMessageText: TableStringFilterInput
+  lastTypingReset: TableStringFilterInput
+  members: TableStringFilterInput
+  name: TableStringFilterInput
+  objectId: TableStringFilterInput
+  topic: TableStringFilterInput
+  typing: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+  workspaceId: TableStringFilterInput
+}
+
+input TableDetailFilterInput {
+  chatId: TableStringFilterInput
+  createdAt: TableStringFilterInput
+  lastRead: TableIntFilterInput
+  objectId: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+  userId: TableStringFilterInput
+  workspaceId: TableStringFilterInput
+}
+
+input TableDirectFilterInput {
+  active: TableStringFilterInput
+  createdAt: TableStringFilterInput
+  lastMessageCounter: TableIntFilterInput
+  lastMessageText: TableStringFilterInput
+  lastTypingReset: TableStringFilterInput
+  members: TableStringFilterInput
+  objectId: TableStringFilterInput
+  typing: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+  workspaceId: TableStringFilterInput
+}
+
+input TableFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input TableIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input TableIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input TableMessageFilterInput {
+  chatId: TableStringFilterInput
+  chatType: TableStringFilterInput
+  counter: TableIntFilterInput
+  createdAt: TableStringFilterInput
+  fileName: TableStringFilterInput
+  fileSize: TableStringFilterInput
+  fileType: TableStringFilterInput
+  fileURL: TableStringFilterInput
+  isDeleted: TableBooleanFilterInput
+  isEdited: TableBooleanFilterInput
+  mediaDuration: TableFloatFilterInput
+  mediaHeight: TableIntFilterInput
+  mediaWidth: TableIntFilterInput
+  objectId: TableStringFilterInput
+  senderId: TableStringFilterInput
+  sticker: TableStringFilterInput
+  text: TableStringFilterInput
+  thumbnailURL: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+  workspaceId: TableStringFilterInput
+}
+
+input TablePresenceFilterInput {
+  createdAt: TableStringFilterInput
+  lastPresence: TableStringFilterInput
+  objectId: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input TableUserFilterInput {
+  createdAt: TableStringFilterInput
+  displayName: TableStringFilterInput
+  email: TableStringFilterInput
+  fullName: TableStringFilterInput
+  objectId: TableStringFilterInput
+  phoneNumber: TableStringFilterInput
+  photoURL: TableStringFilterInput
+  theme: TableStringFilterInput
+  thumbnailURL: TableStringFilterInput
+  title: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+  workspaces: TableStringFilterInput
+}
+
+input TableWorkspaceFilterInput {
+  channelId: TableStringFilterInput
+  createdAt: TableStringFilterInput
+  details: TableStringFilterInput
+  isDeleted: TableBooleanFilterInput
+  members: TableStringFilterInput
+  name: TableStringFilterInput
+  objectId: TableStringFilterInput
+  ownerId: TableStringFilterInput
+  photoURL: TableStringFilterInput
+  thumbnailURL: TableStringFilterInput
+  updatedAt: TableStringFilterInput
+}
+
+input UpdateChannelInput {
+  createdAt: AWSDateTime
+  createdBy: String
+  details: String
+  isArchived: Boolean
+  isDeleted: Boolean
+  lastMessageCounter: Int
+  lastMessageText: String
+  lastTypingReset: AWSDateTime
+  members: [String]
+  name: String
+  objectId: String!
+  topic: String
+  typing: [String]
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+input UpdateDetailInput {
+  chatId: String
+  createdAt: AWSDateTime
+  lastRead: Int
+  objectId: String!
+  updatedAt: AWSDateTime
+  userId: String
+  workspaceId: String
+}
+
+input UpdateDirectInput {
+  active: [String]
+  createdAt: AWSDateTime
+  lastMessageCounter: Int
+  lastMessageText: String
+  lastTypingReset: AWSDateTime
+  members: [String]
+  objectId: String!
+  typing: [String]
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+input UpdateMessageInput {
+  chatId: String
+  chatType: String
+  counter: Int
+  createdAt: AWSDateTime
+  fileName: String
+  fileSize: String
+  fileType: String
+  fileURL: String
+  isDeleted: Boolean
+  isEdited: Boolean
+  mediaDuration: Float
+  mediaHeight: Int
+  mediaWidth: Int
+  objectId: String!
+  senderId: String
+  sticker: String
+  text: String
+  thumbnailURL: String
+  updatedAt: AWSDateTime
+  workspaceId: String
+}
+
+input UpdatePresenceInput {
+  createdAt: AWSDateTime
+  lastPresence: AWSDateTime
+  objectId: String!
+  updatedAt: AWSDateTime
+}
+
+input UpdateUserInput {
+  createdAt: AWSDateTime
+  displayName: String
+  email: String
+  fullName: String
+  objectId: String!
+  phoneNumber: String
+  photoURL: String
+  theme: String
+  thumbnailURL: String
+  title: String
+  updatedAt: AWSDateTime
+  workspaces: [String]
+}
+
+input UpdateWorkspaceInput {
+  channelId: String
+  createdAt: AWSDateTime
+  details: String
+  isDeleted: Boolean
+  members: [String]
+  name: String
+  objectId: String!
+  ownerId: String
+  photoURL: String
+  thumbnailURL: String
+  updatedAt: AWSDateTime
+}

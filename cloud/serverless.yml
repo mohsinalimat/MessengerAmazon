@@ -1,0 +1,32 @@
+service: relatedchat-api
+plugins:
+  - serverless-dotenv-plugin
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: prod
+  stackName: RelatedChatLambdaStack
+  region: us-east-1
+  memorySize: 2048
+  timeout: 30
+  lambdaHashingVersion: 20201221
+functions:
+  api:
+    image: ${env:IMAGE}
+    environment:
+      KEY_ID: ${env:KEY_ID}
+      KEY_SECRET: ${env:KEY_SECRET}
+      AWS_USER_POOL_ID: ${cf:RelatedChatAppStack.UserPoolId}
+      AWS_USER_POOL_WEB_CLIENT_ID: ${cf:RelatedChatAppStack.UserPoolWebClientId}
+      AWS_S3_BUCKET: ${cf:RelatedChatAppStack.s3Bucket}
+      AWS_APPSYNC_ENDPOINT: ${cf:RelatedChatAppStack.GraphQLAPIURL}
+      AWS_APPSYNC_API_KEY: ${cf:RelatedChatAppStack.GraphQLAPIKey}
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: false
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: false

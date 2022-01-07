@@ -1,0 +1,20 @@
+{
+  "version" : "2017-02-28",
+  "operation" : "Query",
+  "query" : {
+    "expression" : "chatId = :chatId",
+    "expressionValues" : {
+      ":chatId" : $util.dynamodb.toDynamoDBJson($context.arguments.chatId)
+    }
+  },
+  "filter": {
+    "expression" : "isDeleted = :isDeleted",
+    "expressionValues" : {
+      ":isDeleted" : $util.dynamodb.toDynamoDBJson(false)
+    }
+  },
+  "index" : "chatId-createdAt-index",
+  "limit": $util.defaultIfNull($ctx.args.limit, 50),
+  "nextToken": $util.toJson($util.defaultIfNullOrEmpty($ctx.args.nextToken, null)),
+  "scanIndexForward" : false
+}

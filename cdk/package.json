@@ -1,0 +1,33 @@
+{
+  "name": "relatedchat-app",
+  "version": "1.0.0",
+  "bin": {
+    "relatedchat-app": "bin/relatedchat-app.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "deploy": "npm run build && cdk deploy --require-approval never --outputs-file ./cdk-outputs.json"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.121.0",
+    "@types/node": "10.17.27",
+    "aws-cdk": "1.121.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-amplify": "^1.129.0",
+    "@aws-cdk/aws-appsync": "^1.129.0",
+    "@aws-cdk/aws-codebuild": "^1.129.0",
+    "@aws-cdk/aws-cognito": "^1.129.0",
+    "@aws-cdk/aws-dynamodb": "^1.129.0",
+    "@aws-cdk/aws-ecr": "^1.129.0",
+    "@aws-cdk/aws-iam": "^1.129.0",
+    "@aws-cdk/aws-lambda": "^1.129.0",
+    "@aws-cdk/aws-s3": "^1.129.0",
+    "@aws-cdk/core": "1.121.0",
+    "source-map-support": "^0.5.16"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "relatedchat-cloud",
+  "version": "1.1.0",
+  "scripts": {
+    "lint": "eslint .",
+    "dev": "nodemon -r dotenv/config src/app.local.js"
+  },
+  "engines": {
+    "node": "14"
+  },
+  "main": "app.local.js",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.37.0",
+    "@aws-sdk/client-dynamodb": "^3.37.0",
+    "@aws-sdk/client-s3": "^3.37.0",
+    "@aws-sdk/lib-dynamodb": "^3.37.0",
+    "@vendia/serverless-express": "^4.5.2",
+    "axios": "^0.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "ffmpeg-static": "^4.4.0",
+    "ffprobe-static": "^3.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "image-size": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.5",
+    "mime": "^2.5.2",
+    "node-fetch": "^2.6.1",
+    "sharp": "^0.29.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/ffmpeg-static": "^3.0.0",
+    "@types/fluent-ffmpeg": "^2.1.18",
+    "@types/mime": "^2.0.3",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.6.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "serverless-dotenv-plugin": "^3.10.0"
+  },
+  "private": true
+}
